@@ -1,117 +1,220 @@
-icu (4.8.1.1-3ubuntu0.6) precise-security; urgency=medium
+icu (52.1-8+deb8u4) jessie-security; urgency=high
 
-  * SECURITY UPDATE: information disclosure via overflows
-    - debian/patches/CVE-2015-2632.patch: properly calculate index in
-      source/layout/Features.cpp, check for overflows in
-      source/layout/LETableReference.h.
-    - CVE-2015-2632
-  * SECURITY UPDATE: denial of service and possible code execution via
-    overflows
-    - debian/patches/CVE-2015-4760.patch: check bounds in
-      source/layout/ContextualGlyphInsertionProc2.cpp,
-      source/layout/ContextualGlyphSubstProc.cpp,
-      source/layout/ContextualGlyphSubstProc2.cpp,
-      source/layout/IndicRearrangementProcessor.cpp,
-      source/layout/IndicRearrangementProcessor2.cpp,
-      use unsigned flags in source/layout/LigatureSubstProc.cpp,
-      source/layout/StateTables.h, properly handle errors in
-      source/layout/StateTableProcessor.cpp,
-      source/layout/StateTableProcessor2.cpp.
-    - CVE-2015-4760
+  * Backport upstream fix for CVE-2014-9911: buffer overflow problem in
+    uresbund.cpp .
+  * Backport upstream fix for CVE-2015-2632: unspecified vulnerability allows
+    remote attackers to affect confidentiality via unknown vectors.
+  * Backport upstream fix for CVE-2015-4844: missing boundary checks in
+    layout engine.
+  * Backport upstream fix for CVE-2016-0494: integer signedness issue in
+    IndicRearrangementProcessor.
+  * Backport upstream fix for CVE-2016-6293: the uloc_acceptLanguageFromHTTP
+    function does not ensure that there is a '\0' character at the end of a
+    certain temporary array.
+  * Backport upstream fix for CVE-2016-7415: stack-based buffer overflow in
+    the Locale class via a long locale string (closes: #838694).
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 11 Sep 2015 09:29:59 -0400
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Sat, 10 Sep 2016 12:41:51 +0000
 
-icu (4.8.1.1-3ubuntu0.5) precise-security; urgency=medium
+icu (52.1-8+deb8u3) jessie-security; urgency=high
 
-  * SECURITY UPDATE: multiple issues via font file parsing (LP: #1429043)
-    - debian/patches/layoutengine-security.patch: updated to fix ABI break
-      and re-enabled.
-    - debian/patches/CVE-2014-65xx.patch: re-enabled.
-    - CVE-2013-1569
-    - CVE-2013-2383
-    - CVE-2013-2384
-    - CVE-2013-2419
-    - CVE-2014-6585
-    - CVE-2014-6591
+  * Fix CVE-2015-1270 - uninitialized memory read (closes: #798647).
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Mon, 09 Mar 2015 13:43:14 -0400
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Mon, 14 Sep 2015 17:24:55 +0200
 
-icu (4.8.1.1-3ubuntu0.4) precise-security; urgency=medium
+icu (52.1-8+deb8u2) jessie-security; urgency=high
 
-  * SECURITY REGRESSION: libreoffice calc crash (LP: #1429043)
-    - back out layoutengine-security.patch and CVE-2014-65xx.patch patches
-      pending investigation.
+  * Fix security bugs:
+    - CVE-2014-8146 , a heap overflow,
+    - CVE-2014-8147 , an integer overflow,
+    - CVE-2015-4760 , missing boundary checks in layout engine,
+    - CVE-2014-6585 , finish null pointer checks.
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Fri, 06 Mar 2015 11:36:47 -0500
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 30 Jul 2015 20:45:16 +0000
 
-icu (4.8.1.1-3ubuntu0.3) precise-security; urgency=medium
+icu (52.1-8) unstable; urgency=high
 
-  * SECURITY UPDATE: multiple issues via incorrect font file parsing
-    - debian/patches/layoutengine-security.patch: backport a whole new
-      layout engine to source/layout/*, as provided by upstream.
-    - CVE-2013-1569
-    - CVE-2013-2383
-    - CVE-2013-2384
-    - CVE-2013-2419
-  * SECURITY UPDATE: information disclosure via incorrect font file parsing
-    - debian/patches/CVE-2014-65xx.patch: add checks to
-      source/layout/ContextualSubstSubtables.cpp,
-      source/layout/CursiveAttachmentSubtables.cpp,
-      source/layout/Features.cpp,
-      source/layout/LETableReference.h,
-      source/layout/LigatureSubstSubtables.cpp,
-      source/layout/MultipleSubstSubtables.cpp.
-    - CVE-2014-6585
-    - CVE-2014-6591
-  * SECURITY UPDATE: denial of service or possible code execution in
-    regular expressions
-    - debian/patches/CVE-2014-7923.patch: add limits to
-      source/i18n/regexcmp.cpp, add test to
-      source/test/testdata/regextst.txt.
-    - CVE-2014-7923
-  * SECURITY UPDATE: denial of service or possible code execution in
-    regular expressions
-    - debian/patches/CVE-2014-7926.patch: fix incorrect optimization in
-      source/i18n/regexcmp.cpp, fix comment in source/i18n/regexcmp.h,
-      add test to source/test/testdata/regextst.txt.
-    - CVE-2014-7926
-  * SECURITY UPDATE: denial of service or possible code execution via
-    uninitialized memory in the collator implementation
-    - debian/patches/CVE-2014-7940.patch: properly handle memory in
-      source/i18n/ucol.cpp.
-    - CVE-2014-7940
-  * SECURITY UPDATE: denial of service via incorrect pattern size limits
-    - debian/patches/CVE-2014-9654.patch: fix case insensitive matches and
-      check limits in source/common/unicode/utypes.h,
-      source/common/utypes.c,
-      source/i18n/regexcmp.cpp, source/i18n/regexcmp.h,
-      source/i18n/regeximp.h, source/i18n/i18n.vcxproj.filters,
-      source/i18n/unicode/regex.h, source/i18n/regeximp.cpp,
-      source/i18n/rematch.cpp, source/i18n/i18n.vcxproj,
-      source/i18n/Makefile.in, added tests to
-      source/test/intltest/regextst.cpp, source/test/intltest/regextst.h,
-      source/test/testdata/regextst.txt.
-    - CVE-2014-9654
-  * debian/rules: added cdbs autotools rule and adjust DEB_SRCDIR so test
-    suite gets run during build.
-  * debian/patches/two-digit-year-test.patch: fix test suite failure.
+  * New maintainer (closes: #777694).
+  * Update Standars-Version to 3.9.6 .
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Wed, 04 Mar 2015 11:14:58 -0500
+  [ Michael Gilbert <mgilbert@debian.org> ]
+  * Apply a more complete fix for CVE-2014-7940 (closes: #780503).
+    - Thanks to Marc Deslauriers.
 
-icu (4.8.1.1-3ubuntu0.1) precise-security; urgency=low
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Tue, 17 Mar 2015 11:14:15 +0000
 
-  * SECURITY UPDATE: denial of service and possible code execution via
-    race condition.
-    - debian/patches/CVE-2013-0900.patch: fix thread safety issue in
-      source/common/locid.cpp, source/common/unicode/locid.h.
-    - CVE-2013-0900
-  * SECURITY UPDATE: denial of service and possible code execution via
-    use after free.
-    - debian/patches/CVE-2013-2924.patch: check lengths in
-      source/i18n/csrucode.cpp.
-    - CVE-2013-2924
+icu (52.1-7.1) unstable; urgency=high
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Thu, 10 Oct 2013 10:40:19 -0400
+  * Non-maintainer upload by the Security Team.
+  * Unfixed issue from the previous upload (closes: #776264)
+    - CVE-2014-6585: out-of-bounds read.
+  * Issues fixed in chromium 40.0.2214.91 (closes: #776265, #776719).
+    - CVE-2014-7923: memory corruption in regular expression comparison.
+    - CVE-2014-7926: memory corruption in regular expression comparison.
+    - CVE-2014-7940: uninitialized memory in i18n/icol.cpp.
+    - CVE-2014-9654: more regular expression handling issues.
+
+ -- Michael Gilbert <mgilbert@debian.org>  Sun, 15 Feb 2015 22:19:14 +0000
+
+icu (52.1-7) unstable; urgency=high
+
+  * Patch to CVE-2014-6591, CVE-2014-6585 a font parsing bug.
+    (Closes: #775884)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Wed, 21 Jan 2015 21:33:19 -0500
+
+icu (52.1-6) unstable; urgency=medium
+
+  * Ensure that only flags intended to be set by users make it into
+    icu-config. Previously hardening flags were sneaking in there.
+    (Closes: #759792)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 29 Sep 2014 09:59:09 -0400
+
+icu (52.1-5) unstable; urgency=medium
+
+  * Switch hardening back to dpkg-buildflags. It wasn't previously working
+    but now is, probably because of other bugfixes that have happened in
+    the mean time.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 26 Jul 2014 12:54:32 -0400
+
+icu (52.1-4) unstable; urgency=medium
+
+  * Fix test case that fails with gcc 4.9. Fix is from upstream. (Closes:
+    #746860)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 21 Jun 2014 16:52:47 -0400
+
+icu (52.1-3) unstable; urgency=medium
+
+  * Add package dependency information to assist with upgrades in Ubuntu.
+    This eliminates the need for a delta on the Ubuntu version of the
+    package.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 24 Dec 2013 11:45:03 -0500
+
+icu (52.1-2) unstable; urgency=low
+
+  * Re-upload to unstable
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 03 Dec 2013 16:05:40 -0500
+
+icu (52.1-1) experimental; urgency=low
+
+  * New upstream release
+  * Standards version 3.9.5 (no changes required)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Wed, 13 Nov 2013 16:20:40 -0500
+
+icu (52~m1-2) experimental; urgency=low
+
+  * Updated year in copyright file
+  * Standards version 3.9.4 (no changes required)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 15 Sep 2013 09:02:30 -0400
+
+icu (52~m1-1) experimental; urgency=low
+
+  * New upstream release
+  * Fixed debian/watch file based on new version numbering
+  * Various bugs have been fixed upstream.  (Closes: #712501, #690156)
+  * Avoid packaging debugging library for libicudata since it has no
+    debugging symbols in it.  (Closes: #698696)
+  * Clarify some ambiguous language in the copyright file, and address the
+    issue of derived data from an IETF RFC that does not actually appear
+    in the sources.  (Closes: #721590)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 14 Sep 2013 20:52:27 -0400
+
+icu (4.8.1.1-14) unstable; urgency=high
+
+  * Acknowledge NMU.  Thanks.
+  * Update standards version to 3.9.5.  No changes required.
+  * No changes other than version numbers; uploading with urgency=high.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Wed, 13 Nov 2013 16:19:32 -0500
+
+icu (4.8.1.1-13+nmu1) unstable; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix CVE-2013-2924: use-after-free issue in csrucode.cpp (closes: #726477).
+
+ -- Michael Gilbert <mgilbert@debian.org>  Sun, 27 Oct 2013 03:49:58 +0000
+
+icu (4.8.1.1-13) unstable; urgency=low
+
+  * Multi-arch libicu-dev.  Thanks Dmitrijs Ledkovs
+    <dmitrij.ledkov@ubuntu.com>!  (Closes: #699763)
+  * Mark doxygen as architecture-independent build dependency.
+    (Closes: #706795)
+  * Depend on autotools-dev to update config.guess
+
+ -- Jay Berkenbilt <qjb@debian.org>  Wed, 21 Aug 2013 20:01:15 -0400
+
+icu (4.8.1.1-12) unstable; urgency=high
+
+  * Add patch to address CVE-2013-0900, a threading race condition.
+    (Closes: #702346)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 21 Mar 2013 11:29:08 -0400
+
+icu (4.8.1.1-11) unstable; urgency=medium
+
+  * Fix crash on rendering incremental Malayalam text input.  Thanks Colin
+    Watson. (Closes: #702982)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Mar 2013 14:58:15 -0400
+
+icu (4.8.1.1-10) unstable; urgency=low
+
+  * Include pkg-config files in dev package.  Thanks Tommi Vainikainen.
+    (Closes: #687339)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 17 Nov 2012 14:37:40 -0500
+
+icu (4.8.1.1-9) unstable; urgency=low
+
+  * debian/rules: Use xz compression for binary packages.
+    (Closes: #683901)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 11 Aug 2012 12:41:28 -0400
+
+icu (4.8.1.1-8) unstable; urgency=low
+
+  * Switch hardening back to hardening-wrapper again since otherwise some
+    things sneak into icu-config's output.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 05 Jun 2012 14:27:27 -0400
+
+icu (4.8.1.1-7) unstable; urgency=low
+
+  * Switch hardening back to dpkg-buildoptions.
+  * Fix doc install for newer doxygen.  (Closes: #674382)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 24 May 2012 13:55:13 -0400
+
+icu (4.8.1.1-6) unstable; urgency=low
+
+  * Remove 32-bit packages built on 64-bit architectures, and enable
+    Multiarch.  (Closes: #665416)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 22 Apr 2012 08:40:16 -0400
+
+icu (4.8.1.1-5) unstable; urgency=low
+
+  * Enable security hardening flags.  Thanks to Simon Ruderich for doing
+    100% of the work, sending a clean patch, and providing clear
+    instructions on how to verify.  (Closes: #663601)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 23 Mar 2012 22:45:55 -0400
+
+icu (4.8.1.1-4) unstable; urgency=low
+
+  * Add patch to add CCMP support for Indic.  (Closes: #655101)
+  * Update standards version.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 11 Mar 2012 18:30:29 -0400
 
 icu (4.8.1.1-3) unstable; urgency=high
 

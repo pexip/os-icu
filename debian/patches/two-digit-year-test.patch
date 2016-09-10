@@ -3,11 +3,11 @@ Origin: upstream, http://www.icu-project.org/trac/changeset/35803
 Bug: http://bugs.icu-project.org/trac/ticket/10937
 Bug-Debian: http://bugs.debian.org/746860
 
-Index: icu-4.8.1.1/source/test/intltest/dtfmttst.cpp
+Index: icu/source/test/intltest/dtfmttst.cpp
 ===================================================================
---- icu-4.8.1.1.orig/source/test/intltest/dtfmttst.cpp	2015-03-02 14:42:29.334856346 -0500
-+++ icu-4.8.1.1/source/test/intltest/dtfmttst.cpp	2015-03-02 14:42:29.334856346 -0500
-@@ -995,8 +995,8 @@
+--- icu.orig/source/test/intltest/dtfmttst.cpp	2014-06-21 16:50:09.746088008 -0400
++++ icu/source/test/intltest/dtfmttst.cpp	2014-06-21 16:50:09.742087988 -0400
+@@ -1128,8 +1128,8 @@
          dataerrln("FAIL: SimpleDateFormat constructor - %s", u_errorName(ec));
          return;
      }
