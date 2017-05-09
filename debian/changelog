@@ -1,3 +1,16 @@
+icu (52.1-8+deb8u5pexip1) pexip; urgency=low
+
+  * New upstream release
+
+ -- John-Mark Bell <jmb@pexip.com>  Tue, 09 May 2017 16:17:43 +0100
+
+icu (52.1-8+deb8u5) jessie-security; urgency=high
+
+  * Backport upstream security fix for CVE-2017-7867 and CVE-2017-7868,
+    heap-buffer-overflow in utf8TextAccess.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Mon, 17 Apr 2017 08:41:59 +0000
+
 icu (52.1-8+deb8u4pexip1) pexip; urgency=low
 
   * Migrate to Jessie
