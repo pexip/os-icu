@@ -1,3 +1,16 @@
+icu (52.1-8+deb8u6pexip1) pexip; urgency=low
+
+  * New upstream release
+
+ -- John-Mark Bell <jmb@pexip.com>  Tue, 02 Jan 2018 15:00:08 +0000
+
+icu (52.1-8+deb8u6) jessie; urgency=high
+
+  * Backport upstream security fix for CVE-2017-14952: double free in
+    createMetazoneMappings() (closes: #878840).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Tue, 24 Oct 2017 17:28:29 +0000
+
 icu (52.1-8+deb8u5pexip1) pexip; urgency=low
 
   * New upstream release
