@@ -1,6 +1,8 @@
 icu (52.1-8+deb8u6pexip1) pexip; urgency=low
 
   * New upstream release
+  * debian/patches/CVE-2017-15422.patch: backport upstream fix for
+    integer overflow in Persian calendar handling.
 
  -- John-Mark Bell <jmb@pexip.com>  Tue, 02 Jan 2018 15:00:08 +0000
 
