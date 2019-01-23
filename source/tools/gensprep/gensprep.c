@@ -1,3 +1,5 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
 *
@@ -6,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  gensprep.c
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -111,7 +113,7 @@ static int printHelp(int argc, char* argv[]){
     fprintf(stderr,
         "\t-d or --destdir          destination directory, followed by the path\n"
         "\t-s or --sourcedir        source directory of ICU data, followed by the path\n"
-        "\t-b or --bundle-name      generate the ouput data file with the name specified\n"
+        "\t-b or --bundle-name      generate the output data file with the name specified\n"
         "\t-i or --icudatadir       directory for locating any needed intermediate data files,\n"
         "\t                         followed by path, defaults to %s\n",
         u_getDataDirectory());
@@ -201,7 +203,7 @@ main(int argc, char* argv[]) {
 #else
 
     setUnicodeVersion(options[UNICODE_VERSION].value);
-    filename = (char* ) uprv_malloc(uprv_strlen(srcDir) + 300); /* hopefully this should be enough */
+    filename = (char* ) uprv_malloc(uprv_strlen(srcDir) + uprv_strlen(inputFileName) + (icuUniDataDir == NULL ? 0 : uprv_strlen(icuUniDataDir)) + 40); /* hopefully this should be enough */
    
     /* prepare the filename beginning with the source dir */
     if(uprv_strchr(srcDir,U_FILE_SEP_CHAR) == NULL && uprv_strchr(srcDir,U_FILE_ALT_SEP_CHAR) == NULL){
@@ -353,7 +355,7 @@ strprepProfileLineFn(void *context,
     if (*s == '@') {
         /* special directive */
         s++;
-        length = fields[0][1] - s;
+        length = (int32_t)(fields[0][1] - s);
         if (length >= NORMALIZE_DIRECTIVE_LEN
             && uprv_strncmp(s, NORMALIZE_DIRECTIVE, NORMALIZE_DIRECTIVE_LEN) == 0) {
             options[NORMALIZE].doesOccur = TRUE;

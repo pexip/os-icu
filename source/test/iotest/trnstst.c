@@ -1,3 +1,5 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
 *   Copyright (C) 2005-2016, International Business Machines
@@ -191,7 +193,7 @@ static void TestTranslitFileOut(void)
         return;
     }
 
-    len=fread(ubuf, sizeof(UChar), u_strlen(compare), infile);
+    len= (int)fread(ubuf, sizeof(UChar), u_strlen(compare), infile);
     log_verbose("Read %d UChars\n", len);
     if(len != u_strlen(compare))
     {

@@ -2,42 +2,44 @@ Source: icu
 Section: libs
 Priority: optional
 Maintainer: Laszlo Boszormenyi (GCS) <gcs@debian.org>
-Standards-Version: 3.9.8
-Build-Depends: debhelper (>> 9~), dpkg-dev (>= 1.16.1~), autotools-dev
+Standards-Version: 4.3.0
+Build-Depends: debhelper (>= 11), pkg-config
 Build-Depends-Indep: doxygen (>= 1.7.1)
 Build-Conflicts: clang
 Homepage: http://www.icu-project.org
 
-Package: libicu57
-Section: libs
-Multi-Arch: same
+Package: libicu63
 Architecture: any
+Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends}, ${shlibs:Depends}
+Breaks: openttd (<< 1.8.0-2~), libiculx63 (<< 63.1-5)
+Replaces: libiculx63 (<< 63.1-5)
 Description: International Components for Unicode
  ICU is a C++ and C library that provides robust and full-featured
  Unicode and locale support.  This package contains the runtime
  libraries for ICU.
 
-Package: libicu57-dbg
-Section: debug
-Priority: extra
-Architecture: any
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends}, libicu57 (= ${binary:Version})
-Description: International Components for Unicode (debug symbols)
- ICU is a C++ and C library that provides robust and full-featured
- Unicode and locale support.
- .
- This package contains debugging symbols for the libraries.
-
+#Package: libiculx63
+#Multi-Arch: same
+#Architecture: any
+#Pre-Depends: ${misc:Pre-Depends}
+#Depends: ${misc:Depends}, ${shlibs:Depends}
+#Description: International Components for Unicode
+# ICU is a C++ and C library that provides robust and full-featured
+# Unicode and locale support.  This package contains the runtime
+# libraries for ICU.
+# .
+# This package contains the layout engine.
+#
 Package: libicu-dev
 Section: libdevel
 Architecture: any
+Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends}, ${shlibs:Depends}, libicu57 (= ${binary:Version}), icu-devtools (>= ${binary:Version}), libc6-dev | libc-dev, libstdc++-6-dev | libstdc++-dev
-Replaces: icu-devtools (<< 57.1-1~)
-Breaks: icu-devtools (<< 57.1-1~)
+Depends: ${misc:Depends}, libicu63 (= ${binary:Version}), icu-devtools (>= ${binary:Version}), libc6-dev | libc-dev
+Replaces: icu-devtools (<< 63.1-1~)
+Breaks: icu-devtools (<< 63.1-1~)
 Suggests: icu-doc
 Description: Development files for International Components for Unicode
  ICU is a C++ and C library that provides robust and full-featured
@@ -50,31 +52,18 @@ Architecture: any
 Multi-Arch: foreign
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Replaces: libicu-dev (<< ${binary:Version}), icu-tools (<< 57.1-1~)
-Breaks: libicu-dev (<< ${binary:Version}), icu-tools (<< 57.1-1~)
+Replaces: libicu-dev (<< ${binary:Version}), icu-tools (<< 63.1-1~)
+Breaks: libicu-dev (<< ${binary:Version}), icu-tools (<< 63.1-1~)
 Description: Development utilities for International Components for Unicode
  ICU is a C++ and C library that provides robust and full-featured
  Unicode and locale support. This package contains programs used to
  manipulate data files found in the ICU sources and is a dependency of
  libicu-dev.  End users would generally not need to install this package.
 
-Package: icu-devtools-dbg
-Section: debug
-Priority: extra
-Architecture: any
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends}, libicu57 (= ${binary:Version})
-Description: Development utilities for International Components for Unicode (debug symbols)
- ICU is a C++ and C library that provides robust and full-featured
- Unicode and locale support. This package contains programs used to
- manipulate data files found in the ICU sources and is a dependency of
- libicu-dev.  End users would generally not need to install this package.
- .
- This package contains debugging symbols for icu-devtools.
-
 Package: icu-doc
 Section: doc
 Architecture: all
+Multi-Arch: foreign
 Depends: ${misc:Depends}
 Description: API documentation for ICU classes and functions
  ICU is a C++ and C library that provides robust and full-featured

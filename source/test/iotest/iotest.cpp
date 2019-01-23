@@ -1,10 +1,12 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
 *   Copyright (C) 2002-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *   file name:  iotest.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -176,18 +178,18 @@ char* DataDrivenLogger::fgTestDataPath = NULL;
 static int64_t
 uto64(const UChar     *buffer)
 {
-    int64_t result = 0;
+    uint64_t result = 0;
     /* iterate through buffer */
     while(*buffer) {
         /* read the next digit */
-        result *= 16;
+        result *= 16u;
         if (!u_isxdigit(*buffer)) {
             log_err("\\u%04X is not a valid hex digit for this test\n", (UChar)*buffer);
         }
         result += *buffer - 0x0030 - (*buffer >= 0x0041 ? (*buffer >= 0x0061 ? 39 : 7) : 0);
         buffer++;
     }
-    return result;
+    return (int64_t)result;
 }
 #endif
 
@@ -696,9 +698,7 @@ static void addAllTests(TestNode** root) {
     addTest(root, &DataDrivenPrintfPrecision, "datadriv/DataDrivenPrintfPrecision");
     addTest(root, &DataDrivenScanf, "datadriv/DataDrivenScanf");
 #endif
-#if U_IOSTREAM_SOURCE >= 199711
     addStreamTests(root);
-#endif
 }
 
 /* returns the path to icu/source/data/out */
