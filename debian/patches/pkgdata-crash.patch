@@ -1,0 +1,66 @@
+From 0fd799f7eead9e29fa1dd81f8a119b5fbc88ec36 Mon Sep 17 00:00:00 2001
+From: Michael Ow <mow@svn.icu-project.org>
+Date: Fri, 20 May 2016 20:00:53 +0000
+Subject: [PATCH] ICU-12531 Add null check for closeFunction
+
+X-SVN-Rev: 38757
+---
+ icu4c/source/common/unicode/localpointer.h | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/icu4c/source/common/unicode/localpointer.h b/icu4c/source/common/unicode/localpointer.h
+index 35e37765c23..c86429359da 100644
+--- icu4c/source/common/unicode/localpointer.h
++++ icu4c/source/common/unicode/localpointer.h
+@@ -485,9 +485,6 @@ class LocalArray : public LocalPointerBase<T> {
+  * like LocalPointer<Type> except that this subclass will use the closeFunction
+  * rather than the C++ delete operator.
+  *
+- * Requirement: The closeFunction must tolerate a NULL pointer.
+- * (We could add a NULL check here but it is normally redundant.)
+- *
+  * Usage example:
+  * \code
+  * LocalUCaseMapPointer csm(ucasemap_open(localeID, options, &errorCode));
+@@ -512,12 +509,12 @@ class LocalArray : public LocalPointerBase<T> {
+                 : LocalPointerBase<Type>(src.ptr) { \
+             src.ptr=NULL; \
+         } \
+-        ~LocalPointerClassName() { closeFunction(ptr); } \
++        ~LocalPointerClassName() { if (ptr != NULL) { closeFunction(ptr); } } \
+         LocalPointerClassName &operator=(LocalPointerClassName &&src) U_NOEXCEPT { \
+             return moveFrom(src); \
+         } \
+         LocalPointerClassName &moveFrom(LocalPointerClassName &src) U_NOEXCEPT { \
+-            closeFunction(ptr); \
++            if (ptr != NULL) { closeFunction(ptr); } \
+             LocalPointerBase<Type>::ptr=src.ptr; \
+             src.ptr=NULL; \
+             return *this; \
+@@ -531,7 +528,7 @@ class LocalArray : public LocalPointerBase<T> {
+             p1.swap(p2); \
+         } \
+         void adoptInstead(Type *p) { \
+-            closeFunction(ptr); \
++            if (ptr != NULL) { closeFunction(ptr); } \
+             ptr=p; \
+         } \
+     }
+@@ -544,7 +541,7 @@ class LocalArray : public LocalPointerBase<T> {
+         explicit LocalPointerClassName(Type *p=NULL) : LocalPointerBase<Type>(p) {} \
+         ~LocalPointerClassName() { closeFunction(ptr); } \
+         LocalPointerClassName &moveFrom(LocalPointerClassName &src) U_NOEXCEPT { \
+-            closeFunction(ptr); \
++            if (ptr != NULL) { closeFunction(ptr); } \
+             LocalPointerBase<Type>::ptr=src.ptr; \
+             src.ptr=NULL; \
+             return *this; \
+@@ -558,7 +555,7 @@ class LocalArray : public LocalPointerBase<T> {
+             p1.swap(p2); \
+         } \
+         void adoptInstead(Type *p) { \
+-            closeFunction(ptr); \
++            if (ptr != NULL) { closeFunction(ptr); } \
+             ptr=p; \
+         } \
+     }

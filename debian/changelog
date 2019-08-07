@@ -1,3 +1,9 @@
+icu (57.1-6+deb9u3) stretch; urgency=medium
+
+  * Fix pkgdata command segfault (closes: #893009).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Wed, 07 Aug 2019 16:30:43 +0000
+
 icu (57.1-6+deb9u2) stretch-security; urgency=high
 
   * Backport upstream security fix for CVE-2017-15422: Persian calendar
