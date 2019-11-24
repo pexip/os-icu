@@ -1,3 +1,15 @@
+icu (57.1-6+deb9u3pexip1) pexip; urgency=medium
+
+  * New upstream version
+
+ -- Vincent Sanders <vince@pexip.com>  Fri, 22 Nov 2019 10:33:43 +0000
+
+icu (57.1-6+deb9u3) stretch; urgency=medium
+
+  * Fix pkgdata command segfault (closes: #893009).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Wed, 07 Aug 2019 16:30:43 +0000
+
 icu (57.1-6+deb9u2pexip1) pexip; urgency=medium
 
   * Migrate to Stretch
