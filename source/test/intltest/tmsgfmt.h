@@ -1,3 +1,5 @@
+// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT: 
  * Copyright (c) 1997-2016, International Business Machines Corporation and
@@ -119,6 +121,7 @@ public:
     void TestSelectOrdinal();
     void TestDecimals();
     void TestArgIsPrefixOfAnother();
+    void TestMessageFormatNumberSkeleton();
 
 private:
     UnicodeString GetPatternAndSkipSyntax(const MessagePattern& pattern);
