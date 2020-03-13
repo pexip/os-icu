@@ -5,3 +5,4 @@ hurd-fix.diff
 layout-test-fix.patch
 ICU-20246_Fixing_another_integer_overflow_in_number_parsing.patch
 ICU-20208_uspoof.cpp_function_checkImpl_should_be_static.patch
+CVE-2020-10531.patch
