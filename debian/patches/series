@@ -13,3 +13,5 @@ CVE-2017-7867_CVE-2017-7868.patch
 CVE-2017-14952.patch
 CVE-2017-15422.patch
 pkgdata-crash.patch
+ICU-13634.patch
+CVE-2020-10531.patch
