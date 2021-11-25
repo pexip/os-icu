@@ -1,3 +1,10 @@
+icu (63.1-6+deb10u2) buster-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Use LocalMemory for cmd to prevent use after free (CVE-2020-21913)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Thu, 25 Nov 2021 06:38:47 +0100
+
 icu (63.1-6+deb10u1) buster-security; urgency=high
 
   * Backport upstream security fix for CVE-2020-10531: SEGV_MAPERR in
