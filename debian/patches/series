@@ -7,3 +7,4 @@ ICU-20246_Fixing_another_integer_overflow_in_number_parsing.patch
 ICU-20208_uspoof.cpp_function_checkImpl_should_be_static.patch
 CVE-2020-10531.patch
 ICU-20850-Use-LocalMemory-for-cmd-to-prevent-use-aft.patch
+ICU-20924-Use-pkg-config-to-generate-the-path-to-pkg.patch

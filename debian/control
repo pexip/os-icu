@@ -51,7 +51,7 @@ Section: libdevel
 Architecture: any
 Multi-Arch: foreign
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}, pkg-config
 Replaces: libicu-dev (<< ${binary:Version}), icu-tools (<< 63.1-1~)
 Breaks: libicu-dev (<< ${binary:Version}), icu-tools (<< 63.1-1~)
 Description: Development utilities for International Components for Unicode
