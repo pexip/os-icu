@@ -7,11 +7,18 @@
 include /usr/share/dpkg/architecture.mk
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 DPKG_EXPORT_BUILDFLAGS = 1
+
+ifeq ($(DEB_HOST_ARCH_ENDIAN),little)
+export DEB_CPPFLAGS_MAINT_APPEND = -DU_TIMEZONE_FILES_DIR=/usr/share/zoneinfo-icu/44/le/
+endif
+ifeq ($(DEB_HOST_ARCH_ENDIAN),big)
+export DEB_CPPFLAGS_MAINT_APPEND = -DU_TIMEZONE_FILES_DIR=/usr/share/zoneinfo-icu/44/be/
+endif
+
 include /usr/share/dpkg/buildflags.mk
 
-l_SONAME=63
+l_SONAME=67
 
 override_dh_auto_clean:
 	dh_auto_clean --no-parallel
@@ -37,10 +44,10 @@ override_dh_auto_build:
 
 override_dh_auto_test:
 ifeq (,$(findstring $(DEB_BUILD_ARCH),i386 hurd-i386 kfreebsd-i386))
-	dh_auto_test
+	dh_auto_test --no-parallel
 else
 	# French locale has test problems on x86 architectures
-	-dh_auto_test
+	-dh_auto_test --no-parallel
 endif
 
 override_dh_auto_install:
