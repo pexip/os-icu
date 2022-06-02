@@ -1,3 +1,9 @@
+icu (67.1-7pexip1) pexip; urgency=medium
+
+  * Initial bullseye build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 02 Jun 2022 14:42:17 +0100
+
 icu (67.1-7) unstable; urgency=high
 
   * Backport upstream security fix for CVE-2021-30535: crash caused by locale
