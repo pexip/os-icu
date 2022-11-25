@@ -22,7 +22,9 @@
 #include "unicode/ucnv.h"
 #include "unicode/uiter.h"
 #include "cintltst.h"
+#include "cstring.h"
 #include "cmemory.h"
+#include <stdbool.h>
 #include <string.h>
 
 /* get the sign of an integer */
@@ -36,6 +38,7 @@ static void TestStringFunctions(void);
 static void TestStringSearching(void);
 static void TestSurrogateSearching(void);
 static void TestUnescape(void);
+static void TestUnescapeRepeatedSurrogateLead20725(void);
 static void TestCountChar32(void);
 static void TestUCharIterator(void);
 
@@ -48,6 +51,8 @@ void addUStringTest(TestNode** root)
     addTest(root, &TestStringSearching, "tsutil/custrtst/TestStringSearching");
     addTest(root, &TestSurrogateSearching, "tsutil/custrtst/TestSurrogateSearching");
     addTest(root, &TestUnescape, "tsutil/custrtst/TestUnescape");
+    addTest(root, &TestUnescapeRepeatedSurrogateLead20725,
+            "tsutil/custrtst/TestUnescapeRepeatedSurrogateLead20725");
     addTest(root, &TestCountChar32, "tsutil/custrtst/TestCountChar32");
     addTest(root, &TestUCharIterator, "tsutil/custrtst/TestUCharIterator");
 }
@@ -125,13 +130,13 @@ static void TestStringFunctions()
             u_memcpy(temp,dataTable[i][j], 7);
 
             if(temp[7] != 0xA4)
-                log_err("an error occured in u_memcpy()\n");
+                log_err("an error occurred in u_memcpy()\n");
             if(u_memcmp(temp, dataTable[i][j], 7)!=0)
-                log_err("an error occured in u_memcpy() or u_memcmp()\n");
+                log_err("an error occurred in u_memcpy() or u_memcmp()\n");
         }
     }
     if(u_memcmp(dataTable[0][0], dataTable[1][1], 7)==0)
-        log_err("an error occured in u_memcmp()\n");
+        log_err("an error occurred in u_memcmp()\n");
 
     log_verbose("Testing u_memset()\n");
     nullTemp[0] = 0;
@@ -139,7 +144,7 @@ static void TestStringFunctions()
     u_memset(nullTemp, 0xa4, 7);
     for (i = 0; i < 7; i++) {
         if(nullTemp[i] != 0xa4) {
-            log_err("an error occured in u_memset()\n");
+            log_err("an error occurred in u_memset()\n");
         }
     }
     if(nullTemp[7] != 0) {
@@ -151,7 +156,7 @@ static void TestStringFunctions()
     temp[7] = 0;
     u_memcpy(temp,nullTemp, 7);
     if(u_memcmp(temp, nullTemp, 7)!=0 || temp[7]!=0)
-        log_err("an error occured in u_memcpy() or u_memcmp()\n");
+        log_err("an error occurred in u_memcpy() or u_memcmp()\n");
 
 
     log_verbose("Testing u_memmove()\n");
@@ -160,11 +165,11 @@ static void TestStringFunctions()
     }
     u_memmove(temp + 1, temp, 7);
     if(temp[0] != 0) {
-        log_err("an error occured in u_memmove()\n");
+        log_err("an error occurred in u_memmove()\n");
     }
     for (i = 1; i <= 7; i++) {
         if(temp[i] != (i - 1)) {
-            log_err("an error occured in u_memmove()\n");
+            log_err("an error occurred in u_memmove()\n");
         }
     }
 
@@ -183,7 +188,7 @@ static void TestStringFunctions()
         }
     }
     if(u_strcmp(dataTable[0][0], dataTable[1][1])==0)
-        log_err("an error occured in u_memcmp()\n");
+        log_err("an error occurred in u_memcmp()\n");
 
     log_verbose("testing u_strcat()\n");
     i=0;
@@ -204,7 +209,7 @@ static void TestStringFunctions()
             log_err("Something threw an error in u_strncmp\n");
     }
     if(u_strncmp(dataTable[0][0], dataTable[1][1], 7)==0)
-        log_err("an error occured in u_memcmp()\n");
+        log_err("an error occurred in u_memcmp()\n");
 
 
     log_verbose("Testing u_strncat\n");
@@ -402,7 +407,7 @@ static void TestStringFunctions()
         u_uastrcpy(delimBuf, "q");  /* Give it a delimiter that it can't find. */
         ptr = u_strtok_r(currTokenBuf, delimBuf, &state);
         if (ptr == NULL || u_strcmp(ptr, temp) != 0) {
-            log_err("Should have recieved the same string when there are no delimiters\n");
+            log_err("Should have received the same string when there are no delimiters\n");
         }
         if (u_strtok_r(NULL, delimBuf, &state) != NULL) {
             log_err("Should not have found another token in a one token string\n");
@@ -441,19 +446,19 @@ static void TestStringFunctions()
                 log_err("error: u_strncmpCodePointOrder(2)!=u_memcmpCodePointOrder(2) for string %d and the following one\n", i);
             }
 
-            /* test u_strCompare(TRUE) */
+            /* test u_strCompare(true) */
             len1=u_strlen(strings[i]);
             len2=u_strlen(strings[i+1]);
-            if( u_strCompare(strings[i], -1, strings[i+1], -1, TRUE)>=0 ||
-                u_strCompare(strings[i], -1, strings[i+1], len2, TRUE)>=0 ||
-                u_strCompare(strings[i], len1, strings[i+1], -1, TRUE)>=0 ||
-                u_strCompare(strings[i], len1, strings[i+1], len2, TRUE)>=0
+            if( u_strCompare(strings[i], -1, strings[i+1], -1, true)>=0 ||
+                u_strCompare(strings[i], -1, strings[i+1], len2, true)>=0 ||
+                u_strCompare(strings[i], len1, strings[i+1], -1, true)>=0 ||
+                u_strCompare(strings[i], len1, strings[i+1], len2, true)>=0
             ) {
                 log_err("error: u_strCompare(code point order) fails for string %d and the following one\n", i);
             }
 
-            /* test u_strCompare(FALSE) */
-            r1=u_strCompare(strings[i], -1, strings[i+1], -1, FALSE);
+            /* test u_strCompare(false) */
+            r1=u_strCompare(strings[i], -1, strings[i+1], -1, false);
             r2=u_strcmp(strings[i], strings[i+1]);
             if(_SIGN(r1)!=_SIGN(r2)) {
                 log_err("error: u_strCompare(code unit order)!=u_strcmp() for string %d and the following one\n", i);
@@ -462,10 +467,10 @@ static void TestStringFunctions()
             /* test u_strCompareIter() */
             uiter_setString(&iter1, strings[i], len1);
             uiter_setString(&iter2, strings[i+1], len2);
-            if(u_strCompareIter(&iter1, &iter2, TRUE)>=0) {
+            if(u_strCompareIter(&iter1, &iter2, true)>=0) {
                 log_err("error: u_strCompareIter(code point order) fails for string %d and the following one\n", i);
             }
-            r1=u_strCompareIter(&iter1, &iter2, FALSE);
+            r1=u_strCompareIter(&iter1, &iter2, false);
             if(_SIGN(r1)!=_SIGN(u_strcmp(strings[i], strings[i+1]))) {
                 log_err("error: u_strCompareIter(code unit order)!=u_strcmp() for string %d and the following one\n", i);
             }
@@ -962,6 +967,16 @@ TestSurrogateSearching() {
     ) {
         log_err("error: one of the u_str[str etc](\"aba\") incorrectly finds something\n");
     }
+    /* Regression test for ICU-20684 Use-of-uninitialized-value in isMatchAtCPBoundary
+     * Condition: search the same string while the first char is not an
+     * surrogate and the last char is the leading surragte.
+     */
+    {
+        static const UChar s[]={ 0x0020, 0xD9C1 };
+        if (u_strFindFirst(s, 2, s, 2) != s) {
+            log_err("error: ending with a partial supplementary code point should match\n");
+        }
+    }
 }
 
 static void TestStringCopy()
@@ -1114,6 +1129,55 @@ TestUnescape() {
     /* ### TODO: test u_unescapeAt() */
 }
 
+static void
+TestUnescapeRepeatedSurrogateLead20725() {
+    const int32_t repeat = 20000;
+    const int32_t srclen = repeat * 6 + 1;
+    char *src = (char*)malloc(srclen);
+    UChar *dest = (UChar*) malloc(sizeof(UChar) * (repeat + 1));
+    if (src == NULL || dest == NULL) {
+        log_err("memory allocation error");
+    }
+    for (int32_t i = 0; i < repeat; i++) {
+      uprv_strcpy(src + (i * 6), "\\ud841");
+    }
+    int32_t len = u_unescape(src, dest, repeat);
+    if (len != repeat) {
+        log_err("failure in u_unescape()");
+    }
+    for (int32_t i = 0; i < repeat; i++) {
+      if (dest[i] != 0xd841) {
+        log_err("failure in u_unescape() return value");
+      }
+    }
+    free(src);
+
+    // A few simple test cases to make sure that the code recovers properly
+    u_unescape("\\ud841\\x5A", dest, repeat);
+    const UChar expected1[] = {0xd841, 'Z', 0};
+    if (u_strcmp(dest, expected1)!=0) {
+        log_err("u_unescape() should return u\"\\ud841Z\" but got %s", dest);
+    }
+
+    u_unescape("\\ud841\\U00050005", dest, repeat);
+    const UChar expected2[] = {0xd841, 0xd900, 0xdc05, 0};
+    if (u_strcmp(dest, expected2)!=0) {
+        log_err("u_unescape() should return u\"\\ud841\\ud900\\udc05\" "
+                "but got %s", dest);
+    }
+
+    // \\xXX is ill-formed. The documentation states:
+    // If an escape sequence is ill-formed, this method returns an empty string.
+    u_unescape("\\ud841\\xXX", dest, repeat);
+    const UChar expected3[] = { 0 };
+    if (u_strcmp(dest, expected3)!=0) {
+        log_err("u_unescape() should return empty string");
+    }
+
+    free(dest);
+
+}
+
 /* test code point counting functions --------------------------------------- */
 
 /* reference implementation of u_strHasMoreChar32Than() */
@@ -1249,7 +1313,7 @@ compareIterators(UCharIterator *iter1, const char *n1,
         return;
     }
     if(!iter1->hasNext(iter1)) {
-        log_err("%s->hasNext() at the start returns FALSE\n", n1);
+        log_err("%s->hasNext() at the start returns false\n", n1);
         return;
     }
 
@@ -1259,7 +1323,7 @@ compareIterators(UCharIterator *iter1, const char *n1,
         return;
     }
     if(!iter2->hasNext(iter2)) {
-        log_err("%s->hasNext() at the start returns FALSE\n", n2);
+        log_err("%s->hasNext() at the start returns false\n", n2);
         return;
     }
 
@@ -1273,11 +1337,11 @@ compareIterators(UCharIterator *iter1, const char *n1,
     } while(c1>=0);
 
     if(iter1->hasNext(iter1)) {
-        log_err("%s->hasNext() at the end returns TRUE\n", n1);
+        log_err("%s->hasNext() at the end returns true\n", n1);
         return;
     }
     if(iter2->hasNext(iter2)) {
-        log_err("%s->hasNext() at the end returns TRUE\n", n2);
+        log_err("%s->hasNext() at the end returns true\n", n2);
         return;
     }
 
@@ -1314,7 +1378,7 @@ compareIterators(UCharIterator *iter1, const char *n1,
         return;
     }
     if(!iter1->hasPrevious(iter1)) {
-        log_err("%s->hasPrevious() at the end returns FALSE\n", n1);
+        log_err("%s->hasPrevious() at the end returns false\n", n1);
         return;
     }
 
@@ -1324,7 +1388,7 @@ compareIterators(UCharIterator *iter1, const char *n1,
         return;
     }
     if(!iter2->hasPrevious(iter2)) {
-        log_err("%s->hasPrevious() at the end returns FALSE\n", n2);
+        log_err("%s->hasPrevious() at the end returns false\n", n2);
         return;
     }
 
@@ -1338,11 +1402,11 @@ compareIterators(UCharIterator *iter1, const char *n1,
     } while(c1>=0);
 
     if(iter1->hasPrevious(iter1)) {
-        log_err("%s->hasPrevious() at the start returns TRUE\n", n1);
+        log_err("%s->hasPrevious() at the start returns true\n", n1);
         return;
     }
     if(iter2->hasPrevious(iter2)) {
-        log_err("%s->hasPrevious() at the start returns TRUE\n", n2);
+        log_err("%s->hasPrevious() at the start returns true\n", n2);
         return;
     }
 }

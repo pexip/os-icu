@@ -1,7 +1,7 @@
 /*
 ***********************************************************************
 * © 2016 and later: Unicode, Inc. and others.
-* License & terms of use: http://www.unicode.org/copyright.html#License
+* License & terms of use: http://www.unicode.org/copyright.html
 ***********************************************************************
 ***********************************************************************
 * Copyright (c) 2002-2014, International Business Machines
@@ -60,7 +60,7 @@ public:
         const char* mySrc = src;
         const char* sourceLimit = src + srcLen;
         UChar* myTarget = target;
-        ucnv_toUnicode(conv, &myTarget, targetLimit, &mySrc, sourceLimit, NULL, TRUE, status);
+        ucnv_toUnicode(conv, &myTarget, targetLimit, &mySrc, sourceLimit, NULL, true, status);
     }
     virtual long getOperationsPerIteration(void){
         return srcLen;
@@ -106,7 +106,7 @@ public:
         const UChar* mySrc = src;
         const UChar* sourceLimit = src + srcLen;
         char* myTarget = target;
-        ucnv_fromUnicode(conv,&myTarget, targetLimit, &mySrc, sourceLimit, NULL, TRUE, status);
+        ucnv_fromUnicode(conv,&myTarget, targetLimit, &mySrc, sourceLimit, NULL, true, status);
     }
     virtual long getOperationsPerIteration(void){
         return srcLen;
@@ -218,7 +218,7 @@ public:
         src = pszIn;
         srcLen = szLen;
         dstLen = UPRV_LENGTHOF(dest);
-        lpUsedDefaultChar=FALSE;
+        lpUsedDefaultChar=false;
         unsigned short bEnc[30]={'\0'};
         const char* tenc=name;
         for(int i=0;*tenc!='\0';i++){
