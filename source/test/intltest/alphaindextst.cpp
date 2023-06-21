@@ -80,7 +80,7 @@ void AlphabeticIndexTest::runIndexedTest( int32_t index, UBool exec, const char*
 } UPRV_BLOCK_MACRO_END
 
 #define TEST_ASSERT(expr) UPRV_BLOCK_MACRO_BEGIN { \
-    if ((expr)==FALSE) { \
+    if ((expr)==false) { \
         errln("%s:%d: Test failure \n", __FILE__, __LINE__); \
     } \
 } UPRV_BLOCK_MACRO_END
@@ -228,7 +228,7 @@ void AlphabeticIndexTest::APITest() {
         TEST_CHECK_STATUS;
         while (index->nextRecord(status)) {
             TEST_CHECK_STATUS;
-            TEST_ASSERT(FALSE);   // No items have been added.
+            TEST_ASSERT(false);   // No items have been added.
         }
         TEST_CHECK_STATUS;
     }
@@ -250,10 +250,10 @@ void AlphabeticIndexTest::APITest() {
     TEST_CHECK_STATUS;
     TEST_ASSERT(itemCount == 4);
 
-    TEST_ASSERT(index->nextBucket(status) == FALSE);
+    TEST_ASSERT(index->nextBucket(status) == false);
     index->resetBucketIterator(status);
     TEST_CHECK_STATUS;
-    TEST_ASSERT(index->nextBucket(status) == TRUE);
+    TEST_ASSERT(index->nextBucket(status) == true);
 
     index->clearRecords(status);
     TEST_CHECK_STATUS;
@@ -261,7 +261,7 @@ void AlphabeticIndexTest::APITest() {
     while (index->nextBucket(status)) {
         TEST_CHECK_STATUS;
         while (index->nextRecord(status)) {
-            TEST_ASSERT(FALSE);   // No items have been added.
+            TEST_ASSERT(false);   // No items have been added.
         }
     }
     TEST_CHECK_STATUS;
@@ -290,7 +290,7 @@ void AlphabeticIndexTest::APITest() {
             TEST_ASSERT(type == U_ALPHAINDEX_OVERFLOW);
             TEST_ASSERT(label == charlie);
         } else {
-            TEST_ASSERT(FALSE);
+            TEST_ASSERT(false);
         }
     }
     TEST_ASSERT(i==28);
@@ -464,9 +464,9 @@ void AlphabeticIndexTest::HackPinyinTest() {
         // std::string s;
         // std::cout << label.toUTF8String(s) << ":  ";
 
-        UBool  bucketHasContents = FALSE;
+        UBool  bucketHasContents = false;
         while (aindex.nextRecord(status)) {
-            bucketHasContents = TRUE;
+            bucketHasContents = true;
             UnicodeString name = aindex.getRecordName();
             if (aindex.getBucketLabelType() != U_ALPHAINDEX_NORMAL) {
                 errln("File %s, Line %d, Name \"\\u%x\" is in an under or overflow bucket.",
@@ -518,7 +518,7 @@ static const char *localeAndIndexCharactersLists[][2] = {
     /* Latvian*/    {"lv", "A:B:C:\\u010C:D:E:F:G:\\u0122:H:I:J:K:\\u0136:L:\\u013B:M:N:\\u0145:O:P:Q:R:S:\\u0160:T:U:V:W:X:Z:\\u017D"},
     /* Norwegian Bokm\\u00E5l*/  {"nb", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z:\\u00C6:\\u00D8:\\u00C5"},
     /* Dutch*/  {"nl", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
-    /* Polish*/ {"pl", "A:\\u0104:B:C:\\u0106:D:E:\\u0118:F:G:H:I:J:K:L:\\u0141:M:N:\\u0143:O:\\u00D3:P:Q:R:S:\\u015A:T:U:V:W:X:Y:Z:\\u0179:\\u017B"},
+    /* Polish*/ {"pl", "A:B:C:\\u0106:D:E:F:G:H:I:J:K:L:\\u0141:M:N:O:\\u00D3:P:Q:R:S:\\u015A:T:U:V:W:X:Y:Z:\\u0179:\\u017B"},
     /* Portuguese*/ {"pt", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
     /* Romanian*/   {"ro", "A:\\u0102:\\u00C2:B:C:D:E:F:G:H:I:\\u00CE:J:K:L:M:N:O:P:Q:R:S:\\u0218:T:\\u021A:U:V:W:X:Y:Z"},
     /* Russian*/    {"ru", "\\u0410:\\u0411:\\u0412:\\u0413:\\u0414:\\u0415:\\u0416:\\u0417:\\u0418:\\u0419:\\u041A:\\u041B:\\u041C:\\u041D:\\u041E:\\u041F:\\u0420:\\u0421:\\u0422:\\u0423:\\u0424:\\u0425:\\u0426:\\u0427:\\u0428:\\u0429:\\u042B:\\u042D:\\u042E:\\u042F"},

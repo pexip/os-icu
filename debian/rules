@@ -18,7 +18,7 @@ endif
 
 include /usr/share/dpkg/buildflags.mk
 
-l_SONAME=67
+l_SONAME=70
 
 override_dh_auto_clean:
 	dh_auto_clean --no-parallel
@@ -43,20 +43,13 @@ override_dh_auto_build:
 	dh_auto_build --parallel -- VERBOSE=1 doc
 
 override_dh_auto_test:
-ifeq (,$(findstring $(DEB_BUILD_ARCH),i386 hurd-i386 kfreebsd-i386))
 	dh_auto_test --no-parallel
-else
-	# French locale has test problems on x86 architectures
-	-dh_auto_test --no-parallel
-endif
 
 override_dh_auto_install:
 	dh_auto_install
 	$(MAKE) -C $(CURDIR)/source/ install-doc DESTDIR=$(CURDIR)/debian/tmp/
 	# delete extra license file
 	$(RM) $(CURDIR)/debian/tmp/usr/share/icu/$(l_SONAME).?/LICENSE
-	# remove not needed manpage
-#	$(RM) $(CURDIR)/debian/tmp/usr/share/man/man1/icu-config.1
 
 override_dh_installdocs-indep:
 	dh_installdocs -i

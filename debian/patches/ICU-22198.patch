@@ -1,0 +1,23 @@
+From 8b7ef3d9088c130cf0ef8973b30ceb39a40b605a Mon Sep 17 00:00:00 2001
+From: Eli Kobrin <kobrineli@ispras.ru>
+Date: Thu, 3 Nov 2022 18:25:33 +0300
+Subject: [PATCH] ICU-22198 Fix stack buffer overflow.
+
+---
+ icu4c/source/common/uresbund.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/icu4c/source/common/uresbund.cpp b/icu4c/source/common/uresbund.cpp
+index 17c0177a05c..81fb90e1384 100644
+--- a/source/common/uresbund.cpp
++++ b/source/common/uresbund.cpp
+@@ -202,7 +202,8 @@ typedef enum UResOpenType UResOpenType;
+  */
+ static bool getParentLocaleID(char *name, const char *origName, UResOpenType openType) {
+     // early out if the locale ID has a variant code or ends with _
+-    if (name[uprv_strlen(name) - 1] == '_' || hasVariant(name)) {
++    size_t nameLen = uprv_strlen(name);
++    if (!nameLen || name[nameLen - 1] == '_' || hasVariant(name)) {
+         return chopLocale(name);
+     }
+     

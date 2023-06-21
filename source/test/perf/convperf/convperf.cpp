@@ -1,7 +1,7 @@
 /*
 ***********************************************************************
 * © 2016 and later: Unicode, Inc. and others.
-* License & terms of use: http://www.unicode.org/copyright.html#License
+* License & terms of use: http://www.unicode.org/copyright.html
 ***********************************************************************
 ***********************************************************************
 * Copyright (c) 2002-2014, International Business Machines
@@ -26,7 +26,7 @@ int main(int argc, const char* argv[]){
     if(U_FAILURE(status)){
         return status;
     }
-    if(test.run()==FALSE){
+    if(test.run()==false){
         fprintf(stderr,"FAILED: Tests could not be run please check the arguments.\n");
         return -1;
     }
@@ -126,7 +126,7 @@ UPerfFunction* ConverterPerformanceTest::runIndexedTest(int32_t index, UBool exe
 
 UPerfFunction* ConverterPerformanceTest::TestICU_CleanOpenAllConverters() {
     UErrorCode status = U_ZERO_ERROR;
-    UPerfFunction* pf = new ICUOpenAllConvertersFunction(TRUE, status);
+    UPerfFunction* pf = new ICUOpenAllConvertersFunction(true, status);
     if(U_FAILURE(status)){
         return NULL;
     }
@@ -135,7 +135,7 @@ UPerfFunction* ConverterPerformanceTest::TestICU_CleanOpenAllConverters() {
 
 UPerfFunction* ConverterPerformanceTest::TestICU_OpenAllConverters() {
     UErrorCode status = U_ZERO_ERROR;
-    UPerfFunction* pf = new ICUOpenAllConvertersFunction(FALSE, status);
+    UPerfFunction* pf = new ICUOpenAllConvertersFunction(false, status);
     if(U_FAILURE(status)){
         return NULL;
     }

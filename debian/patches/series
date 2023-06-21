@@ -1,8 +1,2 @@
 icudata-stdlibs.patch
-gennorm2-man.patch
-icuinfo-man.patch
-hurd-fix.diff
-layout-test-fix.patch
-#flaky-tests.patch
-ICU-13786_Fix_addLikelySubtags_minimizeSubtags.patch
-locid_operators.patch
+ICU-22198.patch
