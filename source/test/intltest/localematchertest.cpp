@@ -1,5 +1,5 @@
 // © 2019 and later: Unicode, Inc. and others.
-// License & terms of use: http://www.unicode.org/copyright.html#License
+// License & terms of use: http://www.unicode.org/copyright.html
 
 // localematchertest.cpp
 // created: 2019jul04 Markus W. Scherer
@@ -51,15 +51,17 @@ class LocaleMatcherTest : public IntlTest {
 public:
     LocaleMatcherTest() {}
 
-    void runIndexedTest(int32_t index, UBool exec, const char *&name, char *par=NULL);
+    void runIndexedTest(int32_t index, UBool exec, const char *&name, char *par=NULL) override;
 
     void testEmpty();
     void testCopyErrorTo();
     void testBasics();
     void testSupportedDefault();
     void testUnsupportedDefault();
+    void testNoDefault();
     void testDemotion();
     void testDirection();
+    void testMaxDistanceAndIsMatch();
     void testMatch();
     void testResolvedLocale();
     void testDataDriven();
@@ -82,8 +84,10 @@ void LocaleMatcherTest::runIndexedTest(int32_t index, UBool exec, const char *&n
     TESTCASE_AUTO(testBasics);
     TESTCASE_AUTO(testSupportedDefault);
     TESTCASE_AUTO(testUnsupportedDefault);
+    TESTCASE_AUTO(testNoDefault);
     TESTCASE_AUTO(testDemotion);
     TESTCASE_AUTO(testDirection);
+    TESTCASE_AUTO(testMaxDistanceAndIsMatch);
     TESTCASE_AUTO(testMatch);
     TESTCASE_AUTO(testResolvedLocale);
     TESTCASE_AUTO(testDataDriven);
@@ -302,6 +306,29 @@ void LocaleMatcherTest::testUnsupportedDefault() {
                  -1, result.getSupportedIndex());
 }
 
+void LocaleMatcherTest::testNoDefault() {
+    // We want nullptr instead of any default locale.
+    IcuTestErrorCode errorCode(*this, "testNoDefault");
+    Locale locales[] = { "fr", "en_GB", "en" };
+    LocaleMatcher matcher = LocaleMatcher::Builder().
+        setSupportedLocales(ARRAY_RANGE(locales)).
+        setNoDefaultLocale().
+        build(errorCode);
+    const Locale *best = matcher.getBestMatch("en_GB", errorCode);
+    assertEquals("getBestMatch(en_GB)", "en_GB", locString(best));
+    best = matcher.getBestMatch("en_US", errorCode);
+    assertEquals("getBestMatch(en_US)", "en", locString(best));
+    best = matcher.getBestMatch("fr_FR", errorCode);
+    assertEquals("getBestMatch(fr_FR)", "fr", locString(best));
+    best = matcher.getBestMatch("ja_JP", errorCode);
+    assertEquals("getBestMatch(ja_JP)", "(null)", locString(best));
+    LocaleMatcher::Result result = matcher.getBestMatchResult("ja_JP", errorCode);
+    assertEquals("getBestMatchResult(ja_JP).supp",
+                 "(null)", locString(result.getSupportedLocale()));
+    assertEquals("getBestMatchResult(ja_JP).suppIndex",
+                 -1, result.getSupportedIndex());
+}
+
 void LocaleMatcherTest::testDemotion() {
     IcuTestErrorCode errorCode(*this, "testDemotion");
     Locale supported[] = { "fr", "de-CH", "it" };
@@ -355,6 +382,36 @@ void LocaleMatcherTest::testDirection() {
     }
 }
 
+void LocaleMatcherTest::testMaxDistanceAndIsMatch() {
+    IcuTestErrorCode errorCode(*this, "testMaxDistanceAndIsMatch");
+    LocaleMatcher::Builder builder;
+    LocaleMatcher standard = builder.build(errorCode);
+    Locale germanLux("de-LU");
+    Locale germanPhoenician("de-Phnx-AT");
+    Locale greek("el");
+    assertTrue("standard de-LU / de", standard.isMatch(germanLux, Locale::getGerman(), errorCode));
+    assertFalse("standard de-Phnx-AT / de",
+                standard.isMatch(germanPhoenician, Locale::getGerman(), errorCode));
+
+    // Allow a script difference to still match.
+    LocaleMatcher loose =
+        builder.setMaxDistance(germanPhoenician, Locale::getGerman()).build(errorCode);
+    assertTrue("loose de-LU / de", loose.isMatch(germanLux, Locale::getGerman(), errorCode));
+    assertTrue("loose de-Phnx-AT / de",
+               loose.isMatch(germanPhoenician, Locale::getGerman(), errorCode));
+    assertFalse("loose el / de", loose.isMatch(greek, Locale::getGerman(), errorCode));
+
+    // Allow at most a regional difference.
+    LocaleMatcher regional =
+        builder.setMaxDistance(Locale("de-AT"), Locale::getGerman()).build(errorCode);
+    assertTrue("regional de-LU / de",
+               regional.isMatch(Locale("de-LU"), Locale::getGerman(), errorCode));
+    assertFalse("regional da / no", regional.isMatch(Locale("da"), Locale("no"), errorCode));
+    assertFalse("regional zh-Hant / zh",
+                regional.isMatch(Locale::getChinese(), Locale::getTraditionalChinese(), errorCode));
+}
+
+
 void LocaleMatcherTest::testMatch() {
     IcuTestErrorCode errorCode(*this, "testMatch");
     LocaleMatcher matcher = LocaleMatcher::Builder().build(errorCode);
@@ -380,8 +437,8 @@ void LocaleMatcherTest::testMatch() {
     double matchEnHantTw = matcher.internalMatch(en_Hant_TW, zh_Hant, errorCode);
     assertTrue("zh_Hant should be closer to und_TW than to en_Hant_TW",
                matchEnHantTw < matchZhHant);
-    assertTrue("zh should be closer to und_TW than to en_Hant_TW",
-               matchEnHantTw < matchZh);
+    assertTrue("zh should not match und_TW or en_Hant_TW",
+               matchZh == 0.0 && matchEnHantTw == 0.0); // with changes in CLDR-1435
 }
 
 void LocaleMatcherTest::testResolvedLocale() {
@@ -515,20 +572,20 @@ UBool LocaleMatcherTest::dataDriven(const TestCase &test, IcuTestErrorCode &erro
             favor = ULOCMATCH_FAVOR_SCRIPT;
         } else {
             errln(UnicodeString(u"unsupported FavorSubtag value ") + test.favor);
-            return FALSE;
+            return false;
         }
         builder.setFavorSubtag(favor);
     }
     if (!test.threshold.isEmpty()) {
         infoln("skipping test case on line %d with non-default threshold: not exposed via API",
                (int)test.lineNr);
-        return TRUE;
+        return true;
         // int32_t threshold = Integer.valueOf(test.threshold);
         // builder.internalSetThresholdDistance(threshold);
     }
     LocaleMatcher matcher = builder.build(errorCode);
     if (errorCode.errIfFailureAndReset("LocaleMatcher::Builder::build()")) {
-        return FALSE;
+        return false;
     }
 
     Locale expMatchLocale("");
@@ -538,7 +595,7 @@ UBool LocaleMatcherTest::dataDriven(const TestCase &test, IcuTestErrorCode &erro
         const Locale *bestSupported = matcher.getBestMatchForListString(desiredSP, errorCode);
         if (!assertEquals("bestSupported from string",
                           locString(expMatch), locString(bestSupported))) {
-            return FALSE;
+            return false;
         }
         LocalePriorityList desired(test.desired.toStringPiece(), errorCode);
         LocalePriorityList::Iterator desiredIter = desired.iterator();
@@ -589,7 +646,7 @@ void LocaleMatcherTest::testDataDriven() {
     CharString path(getSourceTestData(errorCode), errorCode);
     path.appendPathPart("localeMatcherTest.txt", errorCode);
     const char *codePage = "UTF-8";
-    LocalUCHARBUFPointer f(ucbuf_open(path.data(), &codePage, TRUE, FALSE, errorCode));
+    LocalUCHARBUFPointer f(ucbuf_open(path.data(), &codePage, true, false, errorCode));
     if(errorCode.errIfFailureAndReset("ucbuf_open(localeMatcherTest.txt)")) {
         return;
     }
@@ -600,7 +657,7 @@ void LocaleMatcherTest::testDataDriven() {
     int32_t numPassed = 0;
     while ((p = ucbuf_readline(f.getAlias(), &lineLength, errorCode)) != nullptr &&
             errorCode.isSuccess()) {
-        line.setTo(FALSE, p, lineLength);
+        line.setTo(false, p, lineLength);
         if (!readTestCase(line, test, errorCode)) {
             if (errorCode.errIfFailureAndReset(
                     "test data syntax error on line %d", (int)test.lineNr)) {

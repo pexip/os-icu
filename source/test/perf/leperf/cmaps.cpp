@@ -1,7 +1,7 @@
 /**************************************************************************
 *
 *   © 2016 and later: Unicode, Inc. and others.
-*   License & terms of use: http://www.unicode.org/copyright.html#License
+*   License & terms of use: http://www.unicode.org/copyright.html
 *
 ***************************************************************************
 ***************************************************************************
@@ -62,7 +62,7 @@ CMAPMapper *CMAPMapper::createUnicodeMapper(const CMAPTable *cmap)
     le_uint16 i;
     le_uint16 nSubtables = SWAPW(cmap->numberSubtables);
     const CMAPEncodingSubtable *subtable = NULL;
-    le_bool found = FALSE;
+    le_bool found = false;
     le_uint16 foundPlatformID = 0xFFFF;
     le_uint16 foundPlatformSpecificID = 0xFFFF;
     le_uint32 foundOffset = 0;
@@ -80,7 +80,7 @@ CMAPMapper *CMAPMapper::createUnicodeMapper(const CMAPTable *cmap)
                 foundOffset = SWAPL(esh->encodingOffset);
                 foundPlatformID = platformID;
                 foundPlatformSpecificID = platformSpecificID;
-                found = TRUE;
+                found = true;
                 foundTable = i;
                 break;
 
@@ -110,7 +110,7 @@ CMAPMapper *CMAPMapper::createUnicodeMapper(const CMAPTable *cmap)
             foundPlatformID = platformID;
             foundPlatformSpecificID = platformSpecificID;
             foundTable = i;
-            found = TRUE;
+            found = true;
             break;
 
           default: printf("Error: table %d (psid %d) is unknown. Skipping.\n", i, platformSpecificID); break;

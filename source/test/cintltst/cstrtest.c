@@ -15,6 +15,8 @@
 *******************************************************************************
 */
 
+#include <stdbool.h>
+
 #include "unicode/ustring.h"
 #include "unicode/ucnv.h"
 #include "cstring.h"
@@ -377,7 +379,7 @@ TestNoInvariantAtSign() {
         char ic = nativeInvChars[i];
         UBool actual = uprv_isAtSign(ic);
         if (actual) {
-            log_err("uprv_isAtSign(invariant '%c')=TRUE is wrong\n", ic);
+            log_err("uprv_isAtSign(invariant '%c')=true is wrong\n", ic);
         }
         if (ic == 0) { break; }
     }
@@ -387,7 +389,7 @@ static void
 TestInvCharToAscii() {
     for (int32_t i = 0;; ++i) {
         char ic = nativeInvChars[i];
-        uint8_t ac = asciiInvChars[i];
+        uint8_t ac = (uint8_t)asciiInvChars[i];
         uint8_t actual = uprv_invCharToAscii(ic);
         if (actual != ac) {
             log_err("uprv_invCharToAscii('%c') did not convert to ASCII 0x%02x\n", ic, (int)ac);

@@ -1,7 +1,7 @@
 /*
 ***********************************************************************
 * © 2016 and later: Unicode, Inc. and others.
-* License & terms of use: http://www.unicode.org/copyright.html#License
+* License & terms of use: http://www.unicode.org/copyright.html
 ***********************************************************************
 ***********************************************************************
 * Copyright (c) 2002-2016, International Business Machines
@@ -500,7 +500,7 @@ int main(int argc, const char* argv[]){
     if(U_FAILURE(status)){
         return status;
     }
-    if(test.run()==FALSE){
+    if(test.run()==false){
         fprintf(stderr,"FAILED: Tests could not be run please check the arguments.\n");
         return -1;
     }

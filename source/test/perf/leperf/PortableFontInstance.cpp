@@ -2,7 +2,7 @@
  *******************************************************************************
  *
  *   © 2016 and later: Unicode, Inc. and others.
- *   License & terms of use: http://www.unicode.org/copyright.html#License
+ *   License & terms of use: http://www.unicode.org/copyright.html
  *
  *******************************************************************************
  *******************************************************************************
@@ -402,7 +402,7 @@ void PortableFontInstance::getGlyphAdvance(LEGlyphID glyph, LEPoint &advance) co
 
 le_bool PortableFontInstance::getGlyphPoint(LEGlyphID /*glyph*/, le_int32 /*pointNumber*/, LEPoint &/*point*/) const
 {
-    return FALSE;
+    return false;
 }
 
 le_int32 PortableFontInstance::getUnitsPerEM() const

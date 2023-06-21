@@ -2,7 +2,7 @@
  *******************************************************************************
  *
  *   © 2016 and later: Unicode, Inc. and others.
- *   License & terms of use: http://www.unicode.org/copyright.html#License
+ *   License & terms of use: http://www.unicode.org/copyright.html
  *
  *******************************************************************************
  *******************************************************************************
@@ -133,6 +133,6 @@ float SimpleFontInstance::getScaleFactorY() const
 
 le_bool SimpleFontInstance::getGlyphPoint(LEGlyphID /*glyph*/, le_int32 /*pointNumber*/, LEPoint &/*point*/) const
 {
-    return FALSE;
+    return false;
 }
 
