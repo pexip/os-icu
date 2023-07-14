@@ -1,3 +1,9 @@
+icu (72.1-3pexip2) pexip; urgency=medium
+
+  * Rebuild to move libicu72 to main
+
+ -- Steve McIntyre <steve.mcintyre@pexip.com>  Fri, 14 Jul 2023 14:46:51 +0100
+
 icu (72.1-3pexip1) pexip; urgency=medium
 
   * New upstream release
