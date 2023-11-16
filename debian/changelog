@@ -1,3 +1,9 @@
+icu (72.1-3pexip3) pexip-bookworm; urgency=medium
+
+  * Initial bookworm build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 16 Nov 2023 10:03:46 +0000
+
 icu (72.1-3pexip2) pexip; urgency=medium
 
   * Rebuild to move libicu72 to main
