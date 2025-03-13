@@ -1,2 +1,3 @@
 icudata-stdlibs.patch
-ICU-22198.patch
+#broken_LICENSE.patch
+reverse_of_ICU-22610.patch

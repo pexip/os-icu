@@ -4,6 +4,8 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+export DEB_CXXFLAGS_MAINT_APPEND += -fexcess-precision=fast
+
 include /usr/share/dpkg/architecture.mk
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
@@ -18,7 +20,7 @@ endif
 
 include /usr/share/dpkg/buildflags.mk
 
-l_SONAME=70
+l_SONAME=76
 
 override_dh_auto_clean:
 	dh_auto_clean --no-parallel
@@ -33,7 +35,7 @@ override_dh_auto_configure:
 ifeq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
 	dh_auto_configure -- --enable-static --disable-layoutex --disable-icu-config
 else
-	dh_auto_configure -B $(CURDIR)/build-native -- --host=$(DEB_BUILD_GNU_TYPE) --disable-layoutex --disable-icu-config
+	dpkg-architecture -a$(DEB_BUILD_ARCH) -f -c dh_auto_configure --reload-all-buildenv-variables -B $(CURDIR)/build-native -- --disable-layoutex --disable-icu-config
 	dh_auto_build -B $(CURDIR)/build-native
 	dh_auto_configure -- --enable-static --with-cross-build=$(CURDIR)/build-native
 endif
@@ -50,6 +52,10 @@ override_dh_auto_install:
 	$(MAKE) -C $(CURDIR)/source/ install-doc DESTDIR=$(CURDIR)/debian/tmp/
 	# delete extra license file
 	$(RM) $(CURDIR)/debian/tmp/usr/share/icu/$(l_SONAME).?/LICENSE
+	# Remove build paths
+	sed -i -e 's,$(CURDIR),BUILDPATH,g' debian/*/usr/lib/*/icu/*/*.inc
+	# Consistently use /bin/sh for SHELL
+	sed -i -e 's,^SHELL =.*,SHELL = /bin/sh,g' debian/*/usr/lib/*/icu/*/*.inc
 
 override_dh_installdocs-indep:
 	dh_installdocs -i
@@ -61,9 +67,14 @@ override_dh_installdocs-indep:
 			ln -s `basename $$normal` $$file; \
 		fi; \
 	done
+	# Remove build paths from documentation
+	sed -i -e 's,$(CURDIR),,g' debian/icu-doc/usr/share/doc/icu-doc/html/icudocs.tag
 
 override_dh_missing:
 	dh_missing --list-missing
+
+override_dh_dwz:
+	echo dh_dwz set to no op due to #1016936
 
 %:
 	dh $@ --sourcedirectory=$(CURDIR)/source/
@@ -71,4 +82,4 @@ override_dh_missing:
 .PHONY: override_dh_auto_clean override_dh_clean override_dh_auto_configure \
 	override_dh_auto_build override_dh_auto_test \
 	override_dh_auto_install override_dh_installdocs-indep \
-	override_dh_missing
+	override_dh_missing override_dh_dwz
