@@ -1,3 +1,102 @@
+icu (76.1-3) unstable; urgency=medium
+
+  * Upload to Sid.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 13 Mar 2025 17:55:46 +0100
+
+icu (76.1-2) experimental; urgency=medium
+
+  * Reverse ICU-22610 to link correctly with icuuc (closes: #1092243).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Mon, 06 Jan 2025 20:25:28 +0100
+
+icu (76.1-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Fri, 25 Oct 2024 20:07:08 +0200
+
+icu (76.1~rc-1) experimental; urgency=medium
+
+  * New major upstream release.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Wed, 02 Oct 2024 18:23:31 +0200
+
+icu (75.1-2) experimental; urgency=medium
+
+  * Remove python3-distutils dependency (closes: #1065874).
+  * Update Standards-Version to 4.7.0 .
+
+  [ Helmut Grohne <helmut@subdivi.de> ]
+  * Fix FTCBFS: differentiate build and host compiler flags
+    (closes: #1057726).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 04 Jul 2024 21:42:26 +0200
+
+icu (75.1-1) experimental; urgency=medium
+
+  * New major upstream release.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 18 Apr 2024 16:47:09 +0200
+
+icu (75.1~rc-1) experimental; urgency=medium
+
+  * New major upstream release candidate version.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 04 Apr 2024 19:18:24 +0200
+
+icu (74.2-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 14 Dec 2023 08:53:50 +0100
+
+icu (74.1-1) experimental; urgency=medium
+
+  * New major upstream release.
+  * Building with Clang causes more problems, switch back to GCC.
+
+  [ Adrian Bunk <bunk@debian.org> ]
+  * Fix FTBFS with GCC 13 on i386 (closes: #1054253).
+
+  [ Vagrant Cascadian <vagrant@reproducible-builds.org> ]
+  * Make builds reproducible (closes: #1039624):
+    - debian/rules: Remove build paths from .inc and .tag files,
+    - debian/rules: Consistently use /bin/sh SHELL in .inc files.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Tue, 31 Oct 2023 22:07:13 +0100
+
+icu (74.1~rc-2) experimental; urgency=medium
+
+  * Build with Clang due to double type number precision with GCC on i386 and
+    hurd-i386 architectures.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Sun, 15 Oct 2023 08:29:53 +0200
+
+icu (74.1~rc-1) experimental; urgency=medium
+
+  * New major upstream release.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Sat, 07 Oct 2023 02:13:37 +0200
+
+icu (73.2-1) experimental; urgency=medium
+
+  * New upstream release.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Thu, 15 Jun 2023 21:49:56 +0200
+
+icu (73.1-1) experimental; urgency=medium
+
+  * New major upstream release.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Sun, 16 Apr 2023 14:51:17 +0200
+
+icu (73.1~rc-1) experimental; urgency=medium
+
+  * New major upstream release candidate version.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Sat, 25 Mar 2023 20:58:37 +0100
+
 icu (72.1-3+pexip24u5) pexip-bookworm; urgency=medium
 
   * New versioning scheme
