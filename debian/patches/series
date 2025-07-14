@@ -1,2 +1,3 @@
 icudata-stdlibs.patch
 ICU-22198.patch
+0001-ICU-22973-Fix-buffer-overflow-by-using-CharString.patch
