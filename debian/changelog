@@ -1,3 +1,9 @@
+icu (76.1-4+pexip25u1) pexip-trixie; urgency=medium
+
+  * New upstream release
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 31 Jul 2025 13:27:29 +0100
+
 icu (76.1-4) unstable; urgency=high
 
   * Backport fix for ICU-22973: fix buffer overflow by using CharString;
