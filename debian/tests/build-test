@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
-CFLAGS=$(shell pkg-config --cflags icu-io)
-LIBS=$(shell pkg-config --libs icu-io)
+CFLAGS=$(shell pkgconf --cflags icu-io)
+LIBS=$(shell pkgconf --libs icu-io)
 
 a.out: debian/tests/ustring.cpp
 	g++ $(CFLAGS) $< $(LIBS)

@@ -1,2 +1,2 @@
 # contains data only
-libicu-dev: no-code-sections [usr/lib/x86_64-linux-gnu/libicudata.a]
+libicu-dev: no-code-sections [usr/lib/*/libicudata.a]
