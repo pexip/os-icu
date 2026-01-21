@@ -1,3 +1,9 @@
+icu (76.1-4+pexip24u2) pexip; urgency=medium
+
+  * Rebuild icu to move to main.
+
+ -- Steve McIntyre <steve.mcintyre@pexip.com>  Wed, 21 Jan 2026 13:20:50 +0000
+
 icu (76.1-4+pexip24u1) pexip-bookworm-nodejs22; urgency=medium
 
   * Backport trixie version to bookworm for NodeJS 22 backport.
